@@ -3,11 +3,12 @@ import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:rxdart/src/subjects/behavior_subject.dart';
 import 'data.dart';
+import 'weather.dart';
 
 
 class LocationWidget extends StatelessWidget {
 
-  Data? data;
+  late Data data;
 
   LocationWidget(Data data, {super.key}) {
     this.data = data;
@@ -22,9 +23,15 @@ class LocationWidget extends StatelessWidget {
 
           Placemark place = placemarkes[0];
 
-          data?.address.add('${place.locality}, ${place.country}');
+          data.address.add('${place.locality}, ${place.country}');
 
-          data?.position.add(position);
+          data.position.add(position);
+
+          getWeather(position.latitude, position.longitude, data.length).then((value) {
+            data.weather.add(value);
+          });
+
+
         });
 
 
@@ -40,7 +47,7 @@ class LocationWidget extends StatelessWidget {
       children: <Widget>[
 
         StreamBuilder(
-          stream: data?.position,
+          stream: data.position,
           builder: ((context, snapshot) {
             var _currentPosition = snapshot.data;
             if(_currentPosition != null) 
@@ -51,7 +58,7 @@ class LocationWidget extends StatelessWidget {
           ),
         
         StreamBuilder(
-          stream: data?.address,
+          stream: data.address,
           builder: ((context, snapshot) {
             var _address = snapshot.data;
             if(_address != '') 

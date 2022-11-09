@@ -2,64 +2,57 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 
-Weather? getWeather(double lat, double lon){
+Future<Weather> getWeather(double lat, double lon, int length) async{
   Map<String, dynamic> params = {
     'lat': 24.37.toString(), 
     'lon': 88.59.toString(),
     'appid': 'da9bd6142b364f2df393f0487cd9193d',
     'units': 'metric',
-    'cnt': 2.toString(),
+    'cnt': length.toString(),
   };
   
   Uri url = Uri.https('api.openweathermap.org', '/data/2.5/forecast', params);
   
-  var resp = http.get(url).then((resp) {
-    var jsonData = jsonDecode(resp.body); 
-    Weather w = Weather(jsonData);
+  var resp = await http.get(url);
+  var jsonData = jsonDecode(resp.body); 
+  Weather w = Weather(jsonData);
 
-
-    return w;
-  }).catchError((e) {
-    print('ERROR');
-    print(e);
-  });
-
-  return null;
+  return w;
 }
 
 class WeatherByTime {
   
-  late String _dateTime;
-  late var _temp;
-  late var _feelsLike;
-  late var _tempMin;
-  late var _tempMax;
-  late var _pressure;
-  late var _humidity;
+  late String dateTime;
+  late var temp;
+  late var feelsLike;
+  late var tempMin;
+  late var tempMax;
+  late var pressure;
+  late var humidity;
 
-  late String _weatherType; // main
-  late String _weatherDescription;
+  late String weatherType; // main
+  late String weatherDescription;
 
-  late var _cloudPercentage; 
+  late var cloudPercentage; 
 
-  late var _windSpeed;
+  late var windSpeed;
 
 
   WeatherByTime(var timeWeather) {
-    this._dateTime = timeWeather['dt_txt'];
-    this._temp = timeWeather['main']['temp'];
-    this._feelsLike = timeWeather['main']['feels_like'];
-    this._tempMin = timeWeather['main']['temp_min'];
-    this._tempMax = timeWeather['main']['temp_max'];
-    this._pressure = timeWeather['main']['pressure'];
-    this._humidity = timeWeather['main']['humidity'];
+    this.dateTime = timeWeather['dt_txt'];
+    this.temp = timeWeather['main']['temp'];
+    this.feelsLike = timeWeather['main']['feels_like'];
+    this.tempMin = timeWeather['main']['temp_min'];
+    this.tempMax = timeWeather['main']['temp_max'];
+    this.pressure = timeWeather['main']['pressure'];
+    this.humidity = timeWeather['main']['humidity'];
 
-    this._weatherType = timeWeather['weather'][0]['main'];
-    this._weatherDescription = timeWeather['weather'][0]['description'];
+    this.weatherType = timeWeather['weather'][0]['main'];
+    this.weatherDescription = timeWeather['weather'][0]['description'];
 
-    this._cloudPercentage = timeWeather['clouds']['all'];
+    this.cloudPercentage = timeWeather['clouds']['all'];
 
-    this._windSpeed = timeWeather['wind']['speed'];
+    this.windSpeed = timeWeather['wind']['speed'];
   }
 
 }
@@ -74,12 +67,15 @@ class Weather {
   Weather(var data) {
     _count = data['cnt'];
 
-    print(data);
     int i = 0;
     for(var dt in data['list']) {
       WeatherByTime x = WeatherByTime(dt);
       this._weatherByTime.add(x);
     }
+  }
+
+  List<WeatherByTime> getWeatherByTime() {
+    return _weatherByTime;
   }
 
   int getCount() {
