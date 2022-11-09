@@ -1,21 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:rxdart/src/subjects/behavior_subject.dart';
+import 'data.dart';
 
-class LocationWidget extends StatefulWidget {
-  const LocationWidget({super.key});
 
-  @override
-  State<LocationWidget> createState() => _LocationState();
-}
+class LocationWidget extends StatelessWidget {
 
-class _LocationState extends State<LocationWidget> {
+  Data? data;
 
-  Position? _currentPosition;
-  String? _address;
+  LocationWidget(Data data, {super.key}) {
+    this.data = data;
+  }
 
-  void _getLocation()
-  {
+  void _getLocation() {
 
     Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.best, forceAndroidLocationManager: true)
       .then((Position position){
@@ -24,42 +22,50 @@ class _LocationState extends State<LocationWidget> {
 
           Placemark place = placemarkes[0];
 
-          setState(() {
-            _currentPosition = position;
-            _address = '${place.locality}, ${place.country}';
+          data?.address.add('${place.locality}, ${place.country}');
 
-          });
-
+          data?.position.add(position);
         });
 
 
       }).catchError((e){
         print(e);
       });
-
-
+    
   }
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
+
+        StreamBuilder(
+          stream: data?.position,
+          builder: ((context, snapshot) {
+            var _currentPosition = snapshot.data;
+            if(_currentPosition != null) 
+              return Text('Lat: ${_currentPosition!.latitude} Lon: ${_currentPosition!.longitude}');
+
+            else return Text('Press the Button to get location.');
+          }),
+          ),
         
-        if(_currentPosition != null) Text('Lat: ${_currentPosition!.latitude} Lon: ${_currentPosition!.longitude}')
+        StreamBuilder(
+          stream: data?.address,
+          builder: ((context, snapshot) {
+            var _address = snapshot.data;
+            if(_address != '') 
+              return Text('${_address}');
 
-        else Text('Press the Button to get location.'),
-
-        if(_address != null) Text(_address!)
-
-        else Text('Press the Button to get address.'),
-
-
+            else return Text('Press the Button to get address.');
+          }),
+          ),
 
         IconButton(
           icon: Icon(Icons.ac_unit_sharp),
           onPressed: () => _getLocation(),
         ),
       ],
-    );
+    );;
   }
 }
