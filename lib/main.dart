@@ -7,6 +7,7 @@ import 'weather_by_time_tab.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'weather.dart';
+import 'main_tab.dart';
 
 void main(List<String> args) {
 
@@ -14,37 +15,26 @@ void main(List<String> args) {
 
 }
 
-BehaviorSubject<int> counter = BehaviorSubject<int>.seeded(0);
+class Main extends StatefulWidget {
+  const Main({super.key});
 
-class Main extends StatelessWidget {
+  @override
+  State<Main> createState() => MainState();
+}
 
-  Main({super.key});
+class MainState extends State<Main> {
 
-  Data data = new Data();
+  var data = Data();
 
+  @override
+  void initState() {
 
-    void _getLocation() {
+    data.getLocationPositionNWeather();
+    super.initState();
+  }
 
-    Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.best, forceAndroidLocationManager: true)
-      .then((Position position){
-
-        placemarkFromCoordinates(position.latitude, position.longitude).then((List<Placemark> placemarkes){
-
-          Placemark place = placemarkes[0];
-
-          data.address.add('${place.locality}, ${place.country}');
-
-          data.position.add(position);
-
-          getWeather(position.latitude, position.longitude, data.length).then((value) {
-            data.weather.add(value);
-          });
-        });
-
-      }).catchError((e){
-        print(e);
-      });
-    
+  void _getLocation() {
+    data.getLocationPositionNWeather();
   }
 
   
@@ -104,9 +94,7 @@ class Main extends StatelessWidget {
         
         body: TabBarView(
           children: [
-            Center(
-              child: Text('Main Tab'),
-            ),
+            MainTab(),
             WeatherByTimeTab(data),
             Center(
               child: Text('Tab 3'),

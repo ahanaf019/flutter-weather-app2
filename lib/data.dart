@@ -1,4 +1,3 @@
-// import 'package:rx/core.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:geolocator/geolocator.dart';
 import 'weather.dart';
@@ -15,7 +14,7 @@ class Data {
   int length = 15;
 
 
-  Data() {
+  void getLocationPositionNWeather() {
 
     Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.best, forceAndroidLocationManager: true)
       .then((Position pos){
@@ -27,13 +26,13 @@ class Data {
           address.add('${place.locality}, ${place.country}');
 
           position.add(pos);
+
+          getWeather(pos.latitude, pos.longitude, length).then((value) {
+            weather.add(value);
+          });
+
+          print("GEOSOFEFOPEPF");
         });
       });
-
-
-    // getWeather(11, 22, 15).then((value) {
-    //   weather.add(value);
-    // });
-
   }
 }
