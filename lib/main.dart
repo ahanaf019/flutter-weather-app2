@@ -8,6 +8,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'weather.dart';
 import 'main_tab.dart';
+import 'weather_icons.dart';
 
 void main(List<String> args) {
 
@@ -43,8 +44,15 @@ class MainState extends State<Main> {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Weather App',
+      themeMode: ThemeMode.system,
+      darkTheme: ThemeData(
+        brightness: Brightness.dark
+      ),
+      theme: ThemeData(
+        brightness: Brightness.light
+      ),
       home: DefaultTabController(
-        length: 3, 
+        length: 2, 
         child: Scaffold(
         appBar: AppBar(
           title: StreamBuilder(
@@ -72,9 +80,8 @@ class MainState extends State<Main> {
           bottom: TabBar(
             controller: null,
             tabs: [
-              Tab(icon: Icon(Icons.abc_outlined),),
-              Tab(icon: Icon(Icons.stacked_line_chart_rounded),),
-              Tab(icon: Icon(Icons.zoom_out_outlined),),
+              Tab(icon: WeatherIcons.tab1Icon,),
+              Tab(icon: WeatherIcons.tab2Icon,),
             ]
           ),
         ),
@@ -96,9 +103,6 @@ class MainState extends State<Main> {
           children: [
             MainTab(),
             WeatherByTimeTab(data),
-            Center(
-              child: Text('Tab 3'),
-            ),
 
           ],
         )

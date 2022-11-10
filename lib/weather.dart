@@ -32,6 +32,7 @@ class WeatherByTime {
 
   late String weatherType; // main
   late String weatherDescription;
+  late String icon;
 
   late var cloudPercentage; 
 
@@ -49,6 +50,7 @@ class WeatherByTime {
 
     this.weatherType = timeWeather['weather'][0]['main'];
     this.weatherDescription = timeWeather['weather'][0]['description'];
+    this.icon = timeWeather['weather'][0]['icon'];
 
     this.cloudPercentage = timeWeather['clouds']['all'];
 

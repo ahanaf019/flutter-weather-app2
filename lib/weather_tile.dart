@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'weather.dart';
+import 'weather_icons.dart';
+
 
 class WeatherTile extends StatelessWidget {
 
@@ -49,15 +51,16 @@ class WeatherTile extends StatelessWidget {
   Widget build(BuildContext context) {
 
     if(data != null) {
-      // _formatDateTime(data.dateTime);
+
       return ListTile(
-        leading: Icon(Icons.sunny),
+        leading: WeatherIcons.iconById[data.icon],
         title: Text('${_formatDateTime(data.dateTime)}'),
-        trailing: Text('${data.temp}°C'),
-        subtitle: Text('Feels Like: ${data.feelsLike}°C'),
+        trailing: Text('${(data.temp).round()}°C', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.amber[300]),),
+        subtitle: Text('Feels Like: ${(data.feelsLike).round()}°C'),
         // isThreeLine: true,
       );
     } else {
+      
       return const ListTile(
         leading: Icon(Icons.sunny),
         title: Text('Loading'),

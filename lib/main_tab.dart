@@ -6,6 +6,8 @@ class MainTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Image(image: NetworkImage('https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg'));
+    return Center(
+      child: Text('Hello World'),
+    );
   }
 }
