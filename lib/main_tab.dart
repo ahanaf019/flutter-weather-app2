@@ -62,7 +62,7 @@ class MainTab extends StatelessWidget {
                 var data = snapshot.data?.getWeatherByTime()[0].temp;
 
                 if(data != null) {
-                  return Text('${(data).round().toStringAsFixed(2)}°C', style: TextStyle(color: Colors.orange, fontSize: 70, fontWeight: FontWeight.bold),);
+                  return Text('${(data).round()}°C', style: TextStyle(color: Colors.orange, fontSize: 70, fontWeight: FontWeight.bold),);
                 }
 
                 return Text('Loading...', style: TextStyle(color: Colors.orange, fontSize: 70, fontWeight: FontWeight.bold),);
@@ -103,7 +103,7 @@ class MainTab extends StatelessWidget {
               var data = snapshot.data?.getWeatherByTime()[0].feelsLike;
 
               if(data != null) {
-                return Text('Feels Like: ${(data).toStringAsFixed(2)}°C', style: TextStyle(fontSize: 22, color: Colors.amber[200]),);
+                return Text('Feels Like: ${(data).round()}°C', style: TextStyle(fontSize: 22, color: Colors.amber[200]),);
               }
 
               else {
@@ -124,9 +124,9 @@ class MainTab extends StatelessWidget {
                 return Row(
                   children: [
                     Spacer(),
-                    Text('Min: ${(data.tempMin).toStringAsFixed(2)}°C', textAlign: TextAlign.left, style: TextStyle(fontSize: 18, color: Colors.amberAccent[400])),
+                    Text('Min: ${(data.tempMin).round()}°C', textAlign: TextAlign.left, style: TextStyle(fontSize: 18, color: Colors.amberAccent[400])),
                     Spacer(),
-                    Text('Max: ${(data.tempMax).toStringAsFixed(2)}°C', textAlign: TextAlign.right, style: TextStyle(fontSize: 18, color: Colors.amberAccent[400]),),
+                    Text('Max: ${(data.tempMax).round()}°C', textAlign: TextAlign.right, style: TextStyle(fontSize: 18, color: Colors.amberAccent[400]),),
                     Spacer(),
                   ],
                 );

@@ -1,12 +1,6 @@
 import 'package:flutter/material.dart';
-// import 'package:rxdart/rxdart.dart';
-// import 'location_widget.dart';
 import 'data.dart';
-// import 'weather_tile.dart';
 import 'weather_by_time_tab.dart';
-// import 'package:geocoding/geocoding.dart';
-// import 'package:geolocator/geolocator.dart';
-// import 'weather.dart';
 import 'main_tab.dart';
 import 'weather_icons.dart';
 
