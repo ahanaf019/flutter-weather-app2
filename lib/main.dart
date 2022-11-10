@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:rxdart/rxdart.dart';
-import 'location_widget.dart';
+// import 'package:rxdart/rxdart.dart';
+// import 'location_widget.dart';
 import 'data.dart';
-import 'weather_tile.dart';
+// import 'weather_tile.dart';
 import 'weather_by_time_tab.dart';
-import 'package:geocoding/geocoding.dart';
-import 'package:geolocator/geolocator.dart';
-import 'weather.dart';
+// import 'package:geocoding/geocoding.dart';
+// import 'package:geolocator/geolocator.dart';
+// import 'weather.dart';
 import 'main_tab.dart';
 import 'weather_icons.dart';
 
@@ -53,7 +53,7 @@ class MainState extends State<Main> {
       ),
       home: DefaultTabController(
         length: 2, 
-        child: Scaffold(
+        child: Scaffold(      
         appBar: AppBar(
           title: StreamBuilder(
             stream: data.address,
@@ -101,7 +101,7 @@ class MainState extends State<Main> {
         
         body: TabBarView(
           children: [
-            MainTab(),
+            MainTab(data),
             WeatherByTimeTab(data),
 
           ],
