@@ -90,11 +90,17 @@ class MainState extends State<Main> {
           child: ListView(
             children: [
               UserAccountsDrawerHeader(
-                accountName: Text('Md. Ahanaf Arif Khan'), 
-                accountEmail: Text('ahanaf019@gmail.com'),
-                currentAccountPicture: CircleAvatar(backgroundColor: Colors.green),
-                decoration: BoxDecoration(color: Colors.purple[400]),
+                accountName: Text('Md. Ahanaf Arif Khan', style: TextStyle(color: Colors.black),), 
+                accountEmail: Text('ahanaf019@gmail.com', style: TextStyle(color: Colors.black)),
+                currentAccountPicture: CircleAvatar(foregroundImage: Image.asset('assets/profile-0.jpg').image,),
+                decoration: BoxDecoration(color: Colors.lightGreen[400]),
               ),
+              ListTile(title: Text('Main Page'), onTap: () {
+                print('Main');
+              },),
+              ListTile(title: Text('About App'), onTap: () {
+                print('About');
+              },),
             ],
           ),
         ),
