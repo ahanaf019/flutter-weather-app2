@@ -4,8 +4,8 @@ import 'package:http/http.dart' as http;
 
 Future<Weather> getWeather(double lat, double lon, int length) async{
   Map<String, dynamic> params = {
-    'lat': 24.37.toString(), 
-    'lon': 88.59.toString(),
+    'lat': lat.toString(), 
+    'lon': lon.toString(),
     'appid': 'da9bd6142b364f2df393f0487cd9193d',
     'units': 'metric',
     'cnt': length.toString(),
@@ -38,8 +38,12 @@ class WeatherByTime {
 
   late var windSpeed;
 
+  late var sunrise;
+  late var sunset;
+  late var timezone;
 
-  WeatherByTime(var timeWeather) {
+
+  WeatherByTime(var timeWeather, var data) {
     this.dateTime = timeWeather['dt_txt'];
     this.temp = timeWeather['main']['temp'];
     this.feelsLike = timeWeather['main']['feels_like'];
@@ -55,6 +59,21 @@ class WeatherByTime {
     this.cloudPercentage = timeWeather['clouds']['all'];
 
     this.windSpeed = timeWeather['wind']['speed'];
+
+
+    this.timezone = data['city']['timezone'];
+
+    this.sunrise = data['city']['sunrise'];
+    var date = DateTime.fromMillisecondsSinceEpoch((sunrise + timezone - 21600)* 1000).toString();
+    var x = date.split(' ')[1].split('.')[0].replaceFirst('0', '').split(':')[0];
+    var y = date.split(' ')[1].split('.')[0].split(':')[1];
+    sunrise = '$x:$y am';
+
+    this.sunset = data['city']['sunset'];
+    date = DateTime.fromMillisecondsSinceEpoch((sunset + timezone - 21600) * 1000).toString();
+    var x1 = int.parse(date.split(' ')[1].split('.')[0].split(':')[0]) - 12;;
+    y = date.split(' ')[1].split('.')[0].split(':')[1];
+    sunset = '$x1:$y pm';
   }
 
 }
@@ -71,7 +90,7 @@ class Weather {
 
     int i = 0;
     for(var dt in data['list']) {
-      WeatherByTime x = WeatherByTime(dt);
+      WeatherByTime x = WeatherByTime(dt, data);
       this._weatherByTime.add(x);
     }
   }

@@ -10,6 +10,7 @@ class WeatherIcons {
 
   static Image tab1Icon = Image.asset('assets/icons/cloudy.png', height: _tabBarIconDim, width: _tabBarIconDim,);
   static Image tab2Icon = Image.asset('assets/icons/default-icon.png', height: _tabBarIconDim, width: _tabBarIconDim,);
+  static Image tab3Icon = Image.asset('assets/icons/search.png', height: _tabBarIconDim - 5, width: _tabBarIconDim - 5,);
   static Image sunny = Image.asset('assets/icons/sunny.png', height: _detailsIconDim, width: _detailsIconDim,);
 
   static Map<String, Image> iconById= {
@@ -27,6 +28,9 @@ class WeatherIcons {
     '11n': Image.asset('assets/icons/11n.png', height: _detailsIconDim, width: _detailsIconDim,),
     '50d': Image.asset('assets/icons/50d.png', height: _detailsIconDim, width: _detailsIconDim,),
     '50n': Image.asset('assets/icons/50n.png', height: _detailsIconDim, width: _detailsIconDim,),
+    'sunrise': Image.asset('assets/icons/sunrise.png', height: _detailsIconDim, width: _detailsIconDim,),
+    'sunset': Image.asset('assets/icons/sunset.png', height: _detailsIconDim, width: _detailsIconDim,),
+    'wind': Image.asset('assets/icons/windy.png', height: _detailsIconDim, width: _detailsIconDim,),
   };
 
     static Map<String, Image> iconByIdLarge= {

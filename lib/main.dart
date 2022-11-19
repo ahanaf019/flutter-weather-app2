@@ -48,7 +48,8 @@ class MainState extends State<Main> {
       ),
       home: DefaultTabController(
         length: 3, 
-        child: Scaffold(      
+        child: Scaffold(    
+          resizeToAvoidBottomInset: false,  
         appBar: AppBar(
           title: StreamBuilder(
             stream: data.address,
@@ -77,7 +78,7 @@ class MainState extends State<Main> {
             tabs: [
               Tab(icon: WeatherIcons.tab1Icon,),
               Tab(icon: WeatherIcons.tab2Icon,),
-              Tab(icon: Icon(Icons.search),),
+              Tab(icon: WeatherIcons.tab3Icon,),
             ]
           ),
         ),

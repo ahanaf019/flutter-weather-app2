@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:geocoding/geocoding.dart';
 import 'weather.dart';
+import 'weather_icons.dart';
 
 
 
@@ -15,20 +16,28 @@ class SeatchTab extends StatefulWidget {
 }
 
 class _SeatchTabState extends State<SeatchTab> {
-  String _text = '';
+  String _lon = '';
+  String _lat = '';
   late var _cities;
   late var _selectedCity;
   late String _temp = '';
   late String _tempMin = '';
   late String _tempMax = '';
   late String _feelsLike = '';
+  late String _icon = '';
+  late String _weatherDescription = '';
+  late double _windSpeed = 0;
+  late String _pressure = '';
+  late String _cloudPercentage = '';
+  late String _sunrise = '';
+  late String _sunset = '';
+  late var _timezone;
 
 
   @override
   void initState() {
     readJson();
     super.initState();
-    _text = '';
   }
 
 
@@ -42,15 +51,24 @@ class _SeatchTabState extends State<SeatchTab> {
       getWeather(lat, lon, 1).then((value2) {
         var x = value2.getWeatherByTime();
 
-      setState(() {
-        _text = 'Lat:${value[0].latitude.toStringAsFixed(2)}, Lon:${value[0].longitude.toStringAsFixed(2)}';
-        _temp = x[0].temp.toStringAsFixed(2);
-        _tempMin = x[0].tempMin.toStringAsFixed(2);
-        _tempMax = x[0].tempMax.toStringAsFixed(2);
-        _feelsLike = x[0].feelsLike.toStringAsFixed(2);
-        
-      });
-
+        setState(() {
+          _lat = '${value[0].latitude.toStringAsFixed(2)}';
+          _lon = '${value[0].longitude.toStringAsFixed(2)}';
+          _temp = x[0].temp.round().toString();
+          _tempMin = x[0].tempMin.round().toString();
+          _tempMax = x[0].tempMax.round().toString();
+          _feelsLike = x[0].feelsLike.round().toString();
+          _icon = x[0].icon;
+          _weatherDescription =  x[0].weatherDescription;
+          _windSpeed = x[0].windSpeed;
+          _pressure = x[0].pressure.toString();
+          _cloudPercentage = x[0].cloudPercentage.toString();
+          _sunrise = x[0].sunrise;
+          _sunset = x[0].sunset;
+          _timezone = x[0].timezone;
+          print(_timezone);
+          
+        });
 
       },);
 
@@ -101,6 +119,7 @@ class _SeatchTabState extends State<SeatchTab> {
 
       child: Column(
       children: [
+
         TypeAheadFormField(
           textFieldConfiguration: TextFieldConfiguration(
             controller: _typeAheadController,
@@ -115,7 +134,6 @@ class _SeatchTabState extends State<SeatchTab> {
           itemBuilder: (context, suggestion) {
             String city = suggestion.split(', ')[0];
             String country = suggestion.split(', ')[1];
-
 
 
             return ListTile(
@@ -137,12 +155,61 @@ class _SeatchTabState extends State<SeatchTab> {
         SizedBox(height: 15,),
 
 
-        Text(_text, style: TextStyle(fontSize: 20),),
+        if(_temp != '')   
+          Column(
+            children: [
+              Container(child: WeatherIcons.iconByIdLarge[_icon]),
+              
+              // SizedBox(height: 15,),
+              Text('${_weatherDescription.toUpperCase()}', style: TextStyle(color: Colors.white70, fontSize: 30, fontWeight: FontWeight.bold),),
+              
+              Text('${_temp}°C', style: TextStyle(color: Colors.orange, fontSize: 70, fontWeight: FontWeight.bold),),
+              
+              Row(
+                children: [
+                  Spacer(),
+                  Icon(Icons.location_on),
+                  Text('${_lat}°N, ${_lon}°E', style: TextStyle(fontSize: 15),),
+                  Spacer(),
+                ],
+              ),
 
-        Text(_temp, style: TextStyle(fontSize: 20),),
-        Text(_feelsLike, style: TextStyle(fontSize: 20),),
-        Text(_tempMin, style: TextStyle(fontSize: 20),),
-        Text(_tempMax, style: TextStyle(fontSize: 20),),
+              Text('Feels Like: ${_feelsLike}°C', style: TextStyle(fontSize: 22, color: Colors.amber[200]),),
+
+              Row(
+                children: [
+                  Spacer(),
+                  Text('Min: ${_tempMin}°C', textAlign: TextAlign.left, style: TextStyle(fontSize: 18, color: Colors.amberAccent[400])),
+                  Spacer(),
+                  Text('Max: ${_tempMax}°C', textAlign: TextAlign.right, style: TextStyle(fontSize: 18, color: Colors.amberAccent[400]),),
+                  Spacer(),
+                ],
+              ),
+
+
+              Column(
+                children: [
+                  ListTile(
+                    title: Text('${_sunrise}', style: TextStyle(fontSize: 20),),
+                    subtitle: Text('Sunrise'),
+                    leading: WeatherIcons.iconById['sunrise'],
+                  ),
+
+                  ListTile(
+                    title: Text('${_sunset}', style: TextStyle(fontSize: 20),),
+                    subtitle: Text('Sunset'),
+                    leading: WeatherIcons.iconById['sunset'],
+                  ),
+
+                  ListTile(
+                    title: Text('${(_windSpeed*1000/3600).toStringAsFixed(2)} kmph', style: TextStyle(fontSize: 20),),
+                    subtitle: Text('Wind Speed'),
+                    leading: WeatherIcons.iconById['wind'],
+                  )
+                ],
+              ),
+            ],
+          )   
       ],
     ),
   );}

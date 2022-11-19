@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'data.dart';
 import 'weather_icons.dart';
 
+
 class MainTab extends StatelessWidget {
   
   late Data data;
@@ -60,9 +61,15 @@ class MainTab extends StatelessWidget {
               builder: ((context, snapshot) {
 
                 var data = snapshot.data?.getWeatherByTime()[0].temp;
+                var data2 = snapshot.data?.getWeatherByTime()[0].weatherDescription;
 
                 if(data != null) {
-                  return Text('${(data).round()}°C', style: TextStyle(color: Colors.orange, fontSize: 70, fontWeight: FontWeight.bold),);
+                  return Column(
+                    children: [
+                      Text('${data2?.toUpperCase()}', style: TextStyle(color: Colors.white70, fontSize: 30, fontWeight: FontWeight.bold),),
+                      Text('${(data).round()}°C', style: TextStyle(color: Colors.orange, fontSize: 70, fontWeight: FontWeight.bold),),
+                    ],
+                  );
                 }
 
                 return Text('Loading...', style: TextStyle(color: Colors.orange, fontSize: 70, fontWeight: FontWeight.bold),);
@@ -86,16 +93,12 @@ class MainTab extends StatelessWidget {
                     ],
                   );
                 }
-
-                else {
-                  return Text('', style: TextStyle(fontSize: 15),);
-                }
+                return Container();
               },
             ),
           ),
 
-
-          SizedBox(height: 10,),
+          const SizedBox(height: 10,),
           
           StreamBuilder(
             stream: data.weather,
@@ -105,15 +108,10 @@ class MainTab extends StatelessWidget {
               if(data != null) {
                 return Text('Feels Like: ${(data).round()}°C', style: TextStyle(fontSize: 22, color: Colors.amber[200]),);
               }
-
-              else {
-                return Text('', style: TextStyle(fontSize: 22, color: Colors.amber[200]),);
-              }
-              
+                return Container();
             },
           ),
           SizedBox(height: 10,), 
-
 
           StreamBuilder(
             stream: data.weather,
@@ -133,19 +131,51 @@ class MainTab extends StatelessWidget {
               }
 
               else {
-                return Row(
+                return Container();
+              } 
+            },
+          ),
+        
+          const SizedBox(height: 15,),
+          StreamBuilder(
+            stream: data.weather,
+            builder: (context, snapshot) {
+              
+              var _windSpeed = snapshot.data?.getWeatherByTime()[0].windSpeed;
+              var _sunrise = snapshot.data?.getWeatherByTime()[0].sunrise;
+              var _sunset = snapshot.data?.getWeatherByTime()[0].sunset;
+
+              if(_windSpeed != null) {
+
+                return Column(
                   children: [
-                    Spacer(),
-                    Text('', textAlign: TextAlign.left, style: TextStyle(fontSize: 18, color: Colors.amberAccent[400])),
-                    Spacer(),
-                    Text('', textAlign: TextAlign.right, style: TextStyle(fontSize: 18, color: Colors.amberAccent[400]),),
-                    Spacer(),
+                    ListTile(
+                      title: Text('${_sunrise}', style: TextStyle(fontSize: 20),),
+                      subtitle: Text('Sunrise'),
+                      leading: WeatherIcons.iconById['sunrise'],
+                    ),
+
+                    ListTile(
+                      title: Text('${_sunset}', style: TextStyle(fontSize: 20),),
+                      subtitle: Text('Sunset'),
+                      leading: WeatherIcons.iconById['sunset'],
+                    ),
+
+                    ListTile(
+                      title: Text('${(_windSpeed*1000/3600).toStringAsFixed(2)} kmph', style: TextStyle(fontSize: 20),),
+                      subtitle: Text('Wind Speed'),
+                      leading: WeatherIcons.iconById['wind'],
+                    )
                   ],
                 );
               }
-              
+                return Container();
+
             },
-          ),
+          )
+
+        
+        
         ],
       ),
     );
