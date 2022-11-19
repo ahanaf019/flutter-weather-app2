@@ -3,6 +3,7 @@ import 'data.dart';
 import 'weather_by_time_tab.dart';
 import 'main_tab.dart';
 import 'weather_icons.dart';
+import 'search_tab.dart';
 
 void main(List<String> args) {
 
@@ -46,7 +47,7 @@ class MainState extends State<Main> {
         brightness: Brightness.light
       ),
       home: DefaultTabController(
-        length: 2, 
+        length: 3, 
         child: Scaffold(      
         appBar: AppBar(
           title: StreamBuilder(
@@ -76,6 +77,7 @@ class MainState extends State<Main> {
             tabs: [
               Tab(icon: WeatherIcons.tab1Icon,),
               Tab(icon: WeatherIcons.tab2Icon,),
+              Tab(icon: Icon(Icons.search),),
             ]
           ),
         ),
@@ -103,6 +105,7 @@ class MainState extends State<Main> {
           children: [
             MainTab(data),
             WeatherByTimeTab(data),
+            Tab(child: SeatchTab(),),
 
           ],
         )
